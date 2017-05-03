@@ -1,126 +1,32 @@
-#########################################################
-# CODE INSTRUCTIONS:                                    #
-# 1) The method findInOrderSuccessor you're asked      #
-#    to implement is located at line 30.                #
-# 2) Use the helper code below to implement it.         #
-# 3) In a nutshell, the helper code allows you to       #
-#    to build a Binary Search Tree.                     #
-# 4) Jump to line 88 to see an example for how the      #
-#    helper code is used to test findInOrderSuccessor.  #
-#########################################################
+from heapq import heappush, heappop
+
+'''
+Given an array of integers arr where each element is at most k places away from its sorted position, code an efficient function sortKMessedArray that sorts arr. For instance, for an input array of size 10 and k = 2, an element belonging to index 6 in the sorted array will be located at either index 4, 5, 6, 7 or 8 in the input array.
+Analyze the time and space complexities of your solution.
+Example:
+input:  arr = [1, 4, 5, 2, 3, 7, 8, 6, 10, 9], k = 2
+output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+'''
 
 
-# A node
-class Node:
-    # Constructor to create a new node
-    def __init__(self, key):
-        self.key = key
-        self.left = None
-        self.right = None
-        self.parent = None
+def sortKMessedArray(arr, k):
+    n = len(arr)
+    window = k + 1
+    if n < k:
+        return
+    h = []
+    for j in range(window):
+        heappush(h, arr[j])
+    for i in range(len(arr) - window):
+        arr[i] = heappop(h)
+        heappush(h, arr[i + window])
+    while len(h) > 0:
+        i += 1
+        arr[i] = heappop(h)
+
+    return arr
 
 
-# A binary search tree
-class BinarySearchTree:
-    # Constructor to create a new BST
-    def __init__(self):
-        self.root = None
-
-    def findInOrderSuccessor(self, inputNode):
-        # Given a binary search tree and a number, inserts a
-        # new node with the given number in the correct place
-        # in the tree. Returns the new root pointer which the
-        # caller should then use(the standard trick to avoid
-        # using reference parameters)
-        if inputNode is None:
-            return None
-        # check if the node has right child
-        curr = inputNode
-        if curr.right is not None:
-            curr = curr.right
-            # no left child
-            if curr.left is None:
-                return curr
-            else:
-                while curr.left is not None:
-                    curr = curr.left
-                return curr
-        # if the input node has no right child sucessor
-        else:
-            while curr.parent is not None and curr.parent.key < inputNode.key:
-                curr = curr.parent
-            return curr.parent
-
-    def insert(self, key):
-
-        # 1) If tree is empty, create the root
-        if (self.root is None):
-            self.root = Node(key)
-            return
-
-        # 2) Otherwise, create a node with the key
-        #    and traverse down the tree to find where to
-        #    to insert the new node
-        currentNode = self.root
-        newNode = Node(key)
-        while (currentNode is not None):
-
-            if (key < currentNode.key):
-                if (currentNode.left is None):
-                    currentNode.left = newNode;
-                    newNode.parent = currentNode;
-                    break
-                else:
-                    currentNode = currentNode.left;
-            else:
-                if (currentNode.right is None):
-                    currentNode.right = newNode;
-                    newNode.parent = currentNode;
-                    break
-                else:
-                    currentNode = currentNode.right;
-
-    # Return a reference to a node in the BST by its key.
-    # Use this method when you need a node to test your
-    # findInOrderSuccessor function on
-    def getNodeByKey(self, key):
-
-        currentNode = self.root
-        while (currentNode is not None):
-            if (key == currentNode.key):
-                return currentNode
-
-            if (key < currentNode.key):
-                currentNode = currentNode.left
-            else:
-                currentNode = currentNode.right
-
-        return None
-
-
-#########################################
-# Driver program to test above function #
-#########################################
-
-# Create a Binary Search Tree
-bst = BinarySearchTree()
-bst.insert(20)
-bst.insert(9);
-bst.insert(25);
-bst.insert(5);
-bst.insert(10);
-bst.insert(11);
-bst.insert(14);
-
-# Get a reference to the node whose key is 9
-test = bst.getNodeByKey(9)
-
-# Find the in order successor of test
-succ = bst.findInOrderSuccessor(test)
-
-# Print the key of the successor node
-if succ is not None:
-    print ("\nInorder Successor of %d is %d " \
-           % (test.key, succ.key))
-else:
-    print ("\nInorder Successor doesn't exist")
+arr = [1, 4, 5, 2, 3, 7, 8, 6, 10, 9]
+k = 2
+print(sortKMessedArray(arr, k))
