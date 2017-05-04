@@ -16,7 +16,6 @@ def isMatch(text, pattern):
             else:
                 return False
         else:
-            # p_letter*
             while p_text < len(text) and p_letter is letter:
                 p_text += 1
                 if p_text < len(text):

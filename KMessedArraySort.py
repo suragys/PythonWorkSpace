@@ -7,8 +7,6 @@ Example:
 input:  arr = [1, 4, 5, 2, 3, 7, 8, 6, 10, 9], k = 2
 output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 '''
-
-
 def sortKMessedArray(arr, k):
     n = len(arr)
     window = k + 1
@@ -30,3 +28,9 @@ def sortKMessedArray(arr, k):
 arr = [1, 4, 5, 2, 3, 7, 8, 6, 10, 9]
 k = 2
 print(sortKMessedArray(arr, k))
+
+
+
+
+
+
